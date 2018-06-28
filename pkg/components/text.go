@@ -13,45 +13,37 @@ const (
 )
 
 type Text interface {
-	SetFormat(Format)
-	SetText(string)
-	SetTextStyle(styles.ComponentTextStyle)
-	SetInlineTextStyles([]styles.InlineTextStyle)
+	Component
+	SetFormat(Format) Text
+	SetText(string) Text
+	SetTextStyle(styles.ComponentTextStyle) Text
+	SetInlineTextStyles([]*styles.InlineTextStyle) Text
 }
 
 type textStruct struct {
 	componentStruct
-	Format           Format                    `json:"format"`
-	Text             string                    `json:"text"`
+	Format           Format                     `json:"format,omitempty"`
+	Text             string                     `json:"text"`
 	InlineTextStyles []*styles.InlineTextStyle  `json:"inlineTextStyles,omitempty"`
 	TextStyle        *styles.ComponentTextStyle `json:"textStyle,omitempty"`
 }
 
-func (t *textStruct) SetRole(role string) Component {
-	t.componentStruct.Role = role
-	return t
-}
-
-func (t *textStruct) Role() string {
-	return t.componentStruct.Role
-}
-
-func (t *textStruct) SetFormat(format Format) Component {
+func (t *textStruct) SetFormat(format Format) Text {
 	t.Format = format
 	return t
 }
 
-func (t *textStruct) SetComponentTextStyle(componentTextStyle styles.ComponentTextStyle) Component {
+func (t *textStruct) SetTextStyle(componentTextStyle styles.ComponentTextStyle) Text {
 	t.TextStyle = &componentTextStyle
 	return t
 }
 
-func (t *textStruct) SetInlineTextStyles(inlineTextStyles []*styles.InlineTextStyle) Component {
+func (t *textStruct) SetInlineTextStyles(inlineTextStyles []*styles.InlineTextStyle) Text {
 	t.InlineTextStyles = inlineTextStyles
 	return t
 }
 
-func (t *textStruct) SetText(text string) Component {
+func (t *textStruct) SetText(text string) Text {
 	t.Text = text
 	return t
 }

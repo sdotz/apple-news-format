@@ -4,8 +4,6 @@ type Color string
 
 type StrokeStyleOption string
 
-
-
 const (
 	StrokeStyleValueSolid  StrokeStyleOption = "solid"
 	StrokeStyleValueDashed StrokeStyleOption = "dashed"
@@ -27,7 +25,7 @@ type StrokeStyle struct {
 }
 
 type ComponentStyle struct {
-	BackgroundColor Color  `json:"backgroundColor"`
-	Border          Border `json:"border"`
-	Fill            Fill   `json:"fill"`
+	BackgroundColor Color  `json:"backgroundColor,omitempty"`
+	Border          *Border `json:"border,omitempty"`
+	Fill            *Fill   `json:"fill,omitempty"`
 }

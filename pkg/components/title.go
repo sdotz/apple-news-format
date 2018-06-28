@@ -1,17 +1,16 @@
 package components
 
-
-type bodyStruct struct {
+type titleStruct struct {
 	textStruct
 }
 
-func NewBody() *bodyStruct {
-	b := bodyStruct{
+func NewTitle() *titleStruct {
+	t := titleStruct{
 		textStruct: textStruct{
 			componentStruct: componentStruct{
 			},
 		},
 	}
-	b.SetRole("body")
-	return &b
+	t.SetRole("title")
+	return &t
 }
