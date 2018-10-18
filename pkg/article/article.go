@@ -1,10 +1,13 @@
 package article
 
 import (
+	"encoding/json"
+	"github.com/nu7hatch/gouuid"
 	"github.com/sdotz/apple-news-format/pkg/components"
 	"github.com/sdotz/apple-news-format/pkg/styles"
 	"github.com/sdotz/apple-news-format/pkg/layouts"
 	"github.com/sdotz/apple-news-format/pkg/properties"
+	"io/ioutil"
 )
 
 type CoverArtType string
@@ -29,16 +32,13 @@ type Article struct {
 	Subtitle            string                               `json:"subtitle"`
 	Layout              Layout                               `json:"layout"`
 	AdvertisingSettings AdvertisingSettings                  `json:"advertisingSettings"`
+	Metadata            ArticleMetadata                      `json:"metadata"`
 	Components          []components.Component               `json:"components"`
 	DocumentStyle       styles.DocumentStyle                 `json:"documentStyle"`
-	ComponentTextStyles map[string]styles.ComponentTextStyle `json:"componentTextStyles"`
-	ComponentStyles     map[string]styles.ComponentStyle     `json:"componentStyles"`
-	TextStyles          map[string]styles.TextStyle          `json:"textStyles"`
-	ComponentLayouts    map[string]layouts.ComponentLayout   `json:"componentLayouts"`
-}
-
-type DocumentStyle struct {
-	BackgroundColor string `json:"backgroundColor"`
+	ComponentTextStyles map[string]styles.ComponentTextStyle `json:"componentTextStyles,omitempty"`
+	ComponentStyles     map[string]styles.ComponentStyle     `json:"componentStyles,omitempty"`
+	TextStyles          map[string]styles.TextStyle          `json:"textStyles,omitempty"`
+	ComponentLayouts    map[string]layouts.ComponentLayout   `json:"componentLayouts,omitempty"`
 }
 
 type Layout struct {
@@ -87,4 +87,52 @@ type ArticleMetadata struct {
 	ThumbnailURL        string                 `json:"thumbnailURL,omitempty"`
 	TransparentToolbar  string                 `json:"transparentToolbar,omitempty"`
 	VideoURL            string                 `json:"videoURL,omitempty"`
+}
+
+func NewArticleWithDefaults() Article {
+	identifier, _ := uuid.NewV4()
+	a := Article{
+		Language: "en",
+		Version:  FORMAT_VERSION_1_7,
+		Layout: Layout{
+			Columns: 10,
+			Gutter:  20,
+			Margin:  60,
+			Width:   1024,
+		},
+		DocumentStyle: styles.DocumentStyle{
+			BackgroundColor: "#FFFFFF",
+		},
+		Identifier: identifier.String(),
+	}
+	a.WithDefaultStyles()
+	return a
+}
+
+func (a *Article) WithDefaultStyles() {
+	componentTextStyleBytes, err := ioutil.ReadFile("./configs/default_component_text_styles.json")
+	if err != nil {
+		panic(err)
+	}
+	var componentTextStyles map[string]styles.ComponentTextStyle
+	if err := json.Unmarshal(componentTextStyleBytes, &componentTextStyles); err != nil {
+		panic(err)
+	}
+
+	a.ComponentTextStyles = componentTextStyles
+
+	componentLayoutBytes, err := ioutil.ReadFile("./configs/default_component_layouts.json")
+	if err != nil {
+		panic(err)
+	}
+	var componentLayouts map[string]layouts.ComponentLayout
+	if err := json.Unmarshal(componentLayoutBytes, &componentLayouts); err != nil {
+		panic(err)
+	}
+	a.ComponentLayouts = componentLayouts
+}
+
+func (article *Article) PushComponent(component components.Component) *Article {
+	article.Components = append(article.Components, component)
+	return article
 }

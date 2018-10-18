@@ -1,0 +1,6 @@
+{
+  "sectionConversionSelectors": [
+    ".page-content"
+  ],
+  "titleSelector": ".headline"
+}

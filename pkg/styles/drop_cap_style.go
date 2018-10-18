@@ -1,11 +1,11 @@
 package styles
 
 type DropCapStyle struct {
-	BackgroundColor     Color  `json:"backgroundColor"`
-	FontName            string `json:"fontName"`
-	NumberOfCharacters  int    `json:"numberOfCharacters"`
-	NumberOfLines       int    `json:"numberOfLines"`
-	NumberOfRaisedLines int    `json:"numberOfRaisedLines"`
-	Padding             int    `json:"padding"`
-	TextColor           Color  `json:"textColor"`
+	BackgroundColor     *Color  `json:"backgroundColor,omitempty"`
+	FontName            string `json:"fontName,omitempty"`
+	NumberOfCharacters  int    `json:"numberOfCharacters,omitempty"`
+	NumberOfLines       int    `json:"numberOfLines,omitempty"`
+	NumberOfRaisedLines int    `json:"numberOfRaisedLines,omitempty"`
+	Padding             int    `json:"padding,omitempty"`
+	TextColor           *Color  `json:"textColor,omitempty"`
 }

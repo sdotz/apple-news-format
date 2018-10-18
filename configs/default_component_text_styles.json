@@ -1,0 +1,83 @@
+{
+  "default": {
+    "textAlignment": "left",
+    "lineHeight": 24,
+    "linkStyle": {
+      "textColor": "#326891",
+      "identifier": "link-style"
+    },
+    "fontName": "ArialMT",
+    "fontSize": 17,
+    "textColor": "#222222",
+    "identifier": "default"
+  },
+  "default-caption": {
+    "textAlignment": "left",
+    "lineHeight": 15,
+    "fontName": "ArialMT",
+    "fontSize": 12,
+    "textColor": "#666666",
+    "identifier": "default-caption"
+  },
+  "default-body": {
+    "textAlignment": "left",
+    "lineHeight": 25,
+    "hyphenation": false,
+    "fontName": "ArialMT",
+    "fontSize": 17,
+    "textColor": "#222222",
+    "identifier": "default-body"
+  },
+  "default-author": {
+    "textAlignment": "left",
+    "lineHeight": 16,
+    "fontName": "Arial-BoldMT",
+    "fontSize": 12,
+    "textColor": "#222222",
+    "identifier": "default-author"
+  },
+  "default-heading1": {
+    "lineHeight": 48,
+    "fontName": "Georgia",
+    "fontSize": 48,
+    "identifier": "default-heading1"
+  },
+  "default-heading2": {
+    "lineHeight": 46,
+    "fontName": "Georgia",
+    "fontSize": 46,
+    "identifier": "default-heading2"
+  },
+  "default-heading3": {
+    "lineHeight": 44,
+    "fontName": "Georgia",
+    "fontSize": 44,
+    "identifier": "default-heading3"
+  },
+  "default-heading4": {
+    "lineHeight": 38,
+    "fontName": "Georgia",
+    "fontSize": 38,
+    "identifier": "default-heading4"
+  },
+  "default-heading5": {
+    "lineHeight": 36,
+    "fontName": "Georgia",
+    "fontSize": 36,
+    "identifier": "default-heading5"
+  },
+  "default-heading6": {
+    "lineHeight": 30,
+    "fontName": "Georgia",
+    "fontSize": 30,
+    "identifier": "default-heading6"
+  },
+  "default-title": {
+    "textAlignment": "left",
+    "lineHeight": 46,
+    "fontName": "Georgia",
+    "fontSize": 44,
+    "textColor": "#222222",
+    "identifier": "default-title"
+  }
+}

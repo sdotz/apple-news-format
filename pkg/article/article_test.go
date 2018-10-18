@@ -13,10 +13,10 @@ func TestMakeBasicArticleJson(t *testing.T) {
 	article := Article{
 		Identifier: "55910234",
 		Components: []components.Component{
-			components.NewTitle().SetText("This is the title!").SetFormat(components.FormatMarkdown),
+			components.NewTitle().SetText("This is the title!").SetFormat(components.FormatHtml),
 			components.NewBody().SetText("Welcome to my story").SetStyle(&styles.ComponentStyle{
 				BackgroundColor: styles.Color("#ffffff"),
-			},),
+			}, ),
 		},
 	}
 

@@ -5,12 +5,11 @@ const (
 )
 
 type ColorStop struct {
-	Color Color `json:"color"`
-	Location int `json:"location,omitempty"`
+	Color    Color `json:"color"`
+	Location int   `json:"location,omitempty"`
 }
 
 type Fill interface {
-
 }
 
 type GradientFill struct {
@@ -18,8 +17,5 @@ type GradientFill struct {
 }
 
 type LinearGradientFill struct {
-
 	Type string
 }
-
-

@@ -1,0 +1,6 @@
+{
+  "sectionConversionSelectors": [
+    "article"
+  ],
+  "titleSelector": "title"
+}
