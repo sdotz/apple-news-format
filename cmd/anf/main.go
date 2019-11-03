@@ -3,9 +3,10 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"gopkg.in/alecthomas/kingpin.v2"
-	"github.com/sdotz/apple-news-format/pkg/convert"
 	"os"
+
+	"github.com/sdotz/apple-news-format/pkg/convert"
+	"gopkg.in/alecthomas/kingpin.v2"
 )
 
 var (
@@ -21,7 +22,7 @@ func main() {
 	case "convert":
 		siteConfig, err := convert.GetSiteConfig(*siteConfigPath)
 		if err != nil {
-			fmt.Println(err.Error())
+			fmt.Fprintln(os.Stderr, err)
 		}
 
 		if siteConfig == nil {
