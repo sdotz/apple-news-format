@@ -1,36 +1,59 @@
 package convert
 
 import (
-	"github.com/PuerkitoBio/goquery"
-	"github.com/sdotz/apple-news-format/pkg/components"
-	"net/http"
-	"io/ioutil"
-	"github.com/sdotz/apple-news-format/pkg/article"
-	"github.com/pkg/errors"
 	"bytes"
-	"golang.org/x/net/html"
+	"io/ioutil"
+	"net/http"
 	url2 "net/url"
+
+	"github.com/PuerkitoBio/goquery"
+	"github.com/pkg/errors"
+	"github.com/sdotz/apple-news-format/pkg/article"
+	"github.com/sdotz/apple-news-format/pkg/components"
+	"golang.org/x/net/html"
 )
 
 func ConvertHtmlToAnf(url string, htmlBytes []byte, siteConfig *SiteConversionConfig) (*article.Article, error) {
-	doc, err := goquery.NewDocumentFromReader(bytes.NewBuffer(htmlBytes))
+
+	myArticle := article.NewArticleWithDefaults()
+	//Example from https://godoc.org/golang.org/x/net/html#example-Parse
+
+	components, err := HTMLToANFComponents(htmlBytes, siteConfig)
 	if err != nil {
 		return nil, err
 	}
 
-	myArticle := article.NewArticleWithDefaults()
-	//Example from https://godoc.org/golang.org/x/net/html#example-Parse
-	for _, v := range siteConfig.SectionConversionSelectors {
-		selection := doc.Find(v)
-		bodyBuilderFunction(&myArticle, selection.Get(0))
-	}
-
-	myArticle.Title = doc.Find(siteConfig.TitleSelector).Text()
+	myArticle.Components = components
+	//myArticle.Title = doc.Find(siteConfig.TitleSelector).Text()
 	myArticle.Metadata.CanonicalURL = url
 	myArticle.Version = article.FORMAT_VERSION_1_7
 	myArticle.Language = "en"
 
 	return &myArticle, nil
+}
+
+func HTMLToANFComponents(htmlBytes []byte, siteConfig *SiteConversionConfig) ([]components.Component, error) {
+	doc, err := goquery.NewDocumentFromReader(bytes.NewBuffer(htmlBytes))
+	if err != nil {
+		return nil, err
+	}
+
+	var components []components.Component
+	if siteConfig != nil && len(siteConfig.SectionConversionSelectors) > 0 {
+		for _, v := range siteConfig.SectionConversionSelectors {
+			selection := doc.Find(v)
+			components, err = bodyBuilderFunction(components, selection.Get(0))
+			if err != nil {
+				return components, err
+			}
+		}
+	} else {
+		components, err = bodyBuilderFunction(components, doc.Get(0))
+		if err != nil {
+			return components, err
+		}
+	}
+	return components, nil
 }
 
 func getElementAttr(element *html.Node, attr string) *html.Attribute {
@@ -44,21 +67,21 @@ func getElementAttr(element *html.Node, attr string) *html.Attribute {
 	return retVal
 }
 
-func bodyBuilderFunction(article *article.Article, n *html.Node) error {
+func bodyBuilderFunction(cs []components.Component, n *html.Node) ([]components.Component, error) {
 	if n.Type == html.ElementNode {
 		switch n.Data {
 		case "p":
 			if n.FirstChild != nil && n.FirstChild.Type == html.TextNode {
 				paragraph := components.NewBody()
 				paragraph.SetText(n.FirstChild.Data)
-				article.PushComponent(paragraph)
+				cs = append(cs, paragraph)
 			}
 			break
 		case "h1":
 			if n.FirstChild != nil && n.FirstChild.Type == html.TextNode {
 				h := components.NewHeadingWithLevel(components.HEADINGLEVEL1)
 				h.SetText(n.FirstChild.Data)
-				article.PushComponent(h)
+				cs = append(cs, h)
 			}
 			break
 		case "img":
@@ -78,7 +101,7 @@ func bodyBuilderFunction(article *article.Article, n *html.Node) error {
 				image.AccessibilityCaption = altText.Val
 			}
 
-			article.PushComponent(image)
+			cs = append(cs, image)
 			break
 		case "video":
 			video := components.NewVideo()
@@ -92,17 +115,21 @@ func bodyBuilderFunction(article *article.Article, n *html.Node) error {
 				video.URL = url.Val
 			}
 
-			article.PushComponent(video)
+			cs = append(cs, video)
 			break
 		default:
 		}
 
 	}
-
 	for c := n.FirstChild; c != nil; c = c.NextSibling {
-		bodyBuilderFunction(article, c)
+		var childComponents []components.Component
+		childComponents, err := bodyBuilderFunction(childComponents, c)
+		if err != nil {
+			return cs, err
+		}
+		cs = append(cs, childComponents...)
 	}
-	return nil
+	return cs, nil
 }
 
 func ConvertUrlToAnf(url string, siteConfig *SiteConversionConfig) (*article.Article, error) {

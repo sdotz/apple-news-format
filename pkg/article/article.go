@@ -2,12 +2,13 @@ package article
 
 import (
 	"encoding/json"
-	"github.com/nu7hatch/gouuid"
+	"io/ioutil"
+
+	uuid "github.com/nu7hatch/gouuid"
 	"github.com/sdotz/apple-news-format/pkg/components"
-	"github.com/sdotz/apple-news-format/pkg/styles"
 	"github.com/sdotz/apple-news-format/pkg/layouts"
 	"github.com/sdotz/apple-news-format/pkg/properties"
-	"io/ioutil"
+	"github.com/sdotz/apple-news-format/pkg/styles"
 )
 
 type CoverArtType string
@@ -135,4 +136,12 @@ func (a *Article) WithDefaultStyles() {
 func (article *Article) PushComponent(component components.Component) *Article {
 	article.Components = append(article.Components, component)
 	return article
+}
+
+func (artcle *Article) String() string {
+	jsonBytes, err := json.Marshal(artcle)
+	if err != nil {
+		return ""
+	}
+	return string(jsonBytes)
 }
