@@ -1,6 +1,6 @@
 package components
 
-type videoStruct struct {
+type VideoStruct struct {
 	componentStruct
 	URL                  string  `json:"URL"`
 	AccessibilityCaption string  `json:"accessibilityCaption,omitempty"`
@@ -10,8 +10,8 @@ type videoStruct struct {
 	StillURL             string  `json:"stillURL,omitempty"`
 }
 
-func NewVideo() *videoStruct {
-	i := videoStruct{}
+func NewVideo() *VideoStruct {
+	i := VideoStruct{}
 	i.SetRole("video")
 	return &i
 }

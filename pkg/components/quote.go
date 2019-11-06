@@ -1,14 +1,13 @@
 package components
 
 type quoteStruct struct {
-	textStruct
+	TextStruct
 }
 
 func NewQuote() *quoteStruct {
 	i := quoteStruct{
-		textStruct: textStruct{
-			componentStruct: componentStruct{
-			},
+		TextStruct: TextStruct{
+			componentStruct: componentStruct{},
 		},
 	}
 	i.SetRole("quote")

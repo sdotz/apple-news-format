@@ -20,7 +20,7 @@ type Text interface {
 	SetInlineTextStyles([]*styles.InlineTextStyle) Text
 }
 
-type textStruct struct {
+type TextStruct struct {
 	componentStruct
 	Format           Format                     `json:"format,omitempty"`
 	Text             string                     `json:"text"`
@@ -28,22 +28,26 @@ type textStruct struct {
 	TextStyle        *styles.ComponentTextStyle `json:"textStyle,omitempty"`
 }
 
-func (t *textStruct) SetFormat(format Format) Text {
+func (t *TextStruct) SetLayout(layout interface{}) error {
+	return t.componentStruct.SetLayout(layout)
+}
+
+func (t *TextStruct) SetFormat(format Format) Text {
 	t.Format = format
 	return t
 }
 
-func (t *textStruct) SetTextStyle(componentTextStyle styles.ComponentTextStyle) Text {
+func (t *TextStruct) SetTextStyle(componentTextStyle styles.ComponentTextStyle) Text {
 	t.TextStyle = &componentTextStyle
 	return t
 }
 
-func (t *textStruct) SetInlineTextStyles(inlineTextStyles []*styles.InlineTextStyle) Text {
+func (t *TextStruct) SetInlineTextStyles(inlineTextStyles []*styles.InlineTextStyle) Text {
 	t.InlineTextStyles = inlineTextStyles
 	return t
 }
 
-func (t *textStruct) SetText(text string) Text {
+func (t *TextStruct) SetText(text string) Text {
 	t.Text = text
 	return t
 }

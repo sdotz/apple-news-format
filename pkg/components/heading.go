@@ -16,15 +16,14 @@ const (
 	HEADINGLEVEL6    HeadingLevel = "6"
 )
 
-type headingStruct struct {
-	textStruct
+type HeadingStruct struct {
+	TextStruct
 }
 
-func NewHeadingWithLevel(level HeadingLevel) *headingStruct {
-	h := headingStruct{
-		textStruct: textStruct{
-			componentStruct: componentStruct{
-			},
+func NewHeadingWithLevel(level HeadingLevel) *HeadingStruct {
+	h := HeadingStruct{
+		TextStruct: TextStruct{
+			componentStruct: componentStruct{},
 		},
 	}
 	h.SetRole(fmt.Sprintf("heading%s", level))

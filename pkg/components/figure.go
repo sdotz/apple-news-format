@@ -1,6 +1,6 @@
 package components
 
-type figureStruct struct {
+type FigureStruct struct {
 	componentStruct
 	URL                  string `json:"URL"`
 	AccessibilityCaption string `json:"accessibilityCaption,omitempty"`
@@ -9,8 +9,8 @@ type figureStruct struct {
 	ExplicitContent bool   `json:"explicitContent,omitempty"`
 }
 
-func NewFigure() *figureStruct {
-	i := figureStruct{}
+func NewFigure() *FigureStruct {
+	i := FigureStruct{}
 	i.SetRole("figure")
 	return &i
 }

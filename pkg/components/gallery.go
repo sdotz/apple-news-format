@@ -1,19 +1,19 @@
 package components
 
-type galleryStruct struct {
+type GalleryStruct struct {
 	componentStruct
-	Items []galleryItem `json:"items"`
+	Items []GalleryItem `json:"items"`
 }
 
-type galleryItem struct {
+type GalleryItem struct {
 	URL                  string `json:"URL"`
 	AccessibilityCaption string `json:"accessibilityCaption,omitempty"`
 	Caption              string `json:"caption,omitempty"`
 	ExplicitContent      bool   `json:"explicitContent,omitempty"`
 }
 
-func NewGallery() *galleryStruct {
-	i := galleryStruct{}
+func NewGallery() *GalleryStruct {
+	i := GalleryStruct{}
 	i.SetRole("gallery")
 	return &i
 }

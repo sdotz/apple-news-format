@@ -1,14 +1,13 @@
 package components
 
 type photographerStruct struct {
-	textStruct
+	TextStruct
 }
 
-func NewPhotographer() *photographerStruct{
+func NewPhotographer() *photographerStruct {
 	i := photographerStruct{
-		textStruct: textStruct{
-			componentStruct: componentStruct{
-			},
+		TextStruct: TextStruct{
+			componentStruct: componentStruct{},
 		},
 	}
 	i.SetRole("photographer")

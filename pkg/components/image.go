@@ -1,6 +1,6 @@
 package components
 
-type imageStruct struct {
+type ImageStruct struct {
 	componentStruct
 	URL                  string `json:"URL"`
 	AccessibilityCaption string `json:"accessibilityCaption,omitempty"`
@@ -9,8 +9,8 @@ type imageStruct struct {
 	ExplicitContent bool   `json:"explicitContent,omitempty"`
 }
 
-func NewImage() *imageStruct {
-	i := imageStruct{}
+func NewImage() *ImageStruct {
+	i := ImageStruct{}
 	i.SetRole("image")
 	return &i
 }

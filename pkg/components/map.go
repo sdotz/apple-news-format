@@ -8,7 +8,7 @@ const (
 
 type MapType string
 
-type mapStruct struct {
+type MapStruct struct {
 	componentStruct
 	Caption              string    `json:"caption,omitempty"`
 	AccessibilityCaption string    `json:"accessibilityCaption,omitempty"`
@@ -30,8 +30,8 @@ type MapSpan struct {
 	LongitudeDelta float64 `json:"longitudeDelta"`
 }
 
-func newMap() *mapStruct {
-	m := mapStruct{}
+func newMap() *MapStruct {
+	m := MapStruct{}
 	m.SetRole("map")
 	return &m
 }

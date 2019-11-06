@@ -1,14 +1,13 @@
 package components
 
-type illustratorStruct struct {
-	textStruct
+type IllustratorStruct struct {
+	TextStruct
 }
 
-func NewIllustrator() *illustratorStruct{
-	i := illustratorStruct{
-		textStruct: textStruct{
-			componentStruct: componentStruct{
-			},
+func NewIllustrator() *IllustratorStruct {
+	i := IllustratorStruct{
+		TextStruct: TextStruct{
+			componentStruct: componentStruct{},
 		},
 	}
 	i.SetRole("illustrator")

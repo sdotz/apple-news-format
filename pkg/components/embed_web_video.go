@@ -1,6 +1,6 @@
 package components
 
-type embedWebVideoStruct struct {
+type EmbedWebVideoStruct struct {
 	componentStruct
 	URL                  string  `json:"URL"`
 	AccessibilityCaption string  `json:"accessibilityCaption,omitempty"`
@@ -9,8 +9,8 @@ type embedWebVideoStruct struct {
 	ExplicitContent      bool    `json:"explicitContent,omitempty"`
 }
 
-func NewEmbedWebVideo() *embedWebVideoStruct {
-	i := embedWebVideoStruct{}
+func NewEmbedWebVideo() *EmbedWebVideoStruct {
+	i := EmbedWebVideoStruct{}
 	i.SetRole("embedwebvideo")
 	return &i
 }

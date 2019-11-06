@@ -1,14 +1,13 @@
 package components
 
-type bylineStruct struct {
-	textStruct
+type BylineStruct struct {
+	TextStruct
 }
 
-func NewByline() *bylineStruct {
-	i := bylineStruct{
-		textStruct: textStruct{
-			componentStruct: componentStruct{
-			},
+func NewByline() *BylineStruct {
+	i := BylineStruct{
+		TextStruct: TextStruct{
+			componentStruct: componentStruct{},
 		},
 	}
 	i.SetRole("byline")

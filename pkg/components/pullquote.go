@@ -1,14 +1,13 @@
 package components
 
 type pullQuoteStruct struct {
-	textStruct
+	TextStruct
 }
 
 func NewPullQuote() *pullQuoteStruct {
 	i := pullQuoteStruct{
-		textStruct: textStruct{
-			componentStruct: componentStruct{
-			},
+		TextStruct: TextStruct{
+			componentStruct: componentStruct{},
 		},
 	}
 	i.SetRole("pullquote")

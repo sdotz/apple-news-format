@@ -1,14 +1,13 @@
 package components
 
-type titleStruct struct {
-	textStruct
+type TitleStruct struct {
+	TextStruct
 }
 
-func NewTitle() *titleStruct {
-	t := titleStruct{
-		textStruct: textStruct{
-			componentStruct: componentStruct{
-			},
+func NewTitle() *TitleStruct {
+	t := TitleStruct{
+		TextStruct: TextStruct{
+			componentStruct: componentStruct{},
 		},
 	}
 	t.SetRole("title")

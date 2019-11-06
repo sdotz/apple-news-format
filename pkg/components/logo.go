@@ -1,6 +1,6 @@
 package components
 
-type logoStruct struct {
+type LogoStruct struct {
 	componentStruct
 	URL                  string `json:"URL"`
 	AccessibilityCaption string `json:"accessibilityCaption,omitempty"`
@@ -9,8 +9,8 @@ type logoStruct struct {
 	ExplicitContent bool   `json:"explicitContent,omitempty"`
 }
 
-func NewLogo() *logoStruct {
-	i := logoStruct{}
+func NewLogo() *LogoStruct {
+	i := LogoStruct{}
 	i.SetRole("logo")
 	return &i
 }

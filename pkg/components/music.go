@@ -1,8 +1,7 @@
 package components
 
-
-func NewMusic() *audioStruct{
-	i := audioStruct{}
+func NewMusic() *AudioStruct {
+	i := AudioStruct{}
 	i.SetRole("music")
 	return &i
 }

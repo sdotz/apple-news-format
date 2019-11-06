@@ -1,14 +1,13 @@
 package components
 
-type captionStruct struct {
-	textStruct
+type CaptionStruct struct {
+	TextStruct
 }
 
-func NewCaption() *captionStruct {
-	i := captionStruct{
-		textStruct: textStruct{
-			componentStruct: componentStruct{
-			},
+func NewCaption() *CaptionStruct {
+	i := CaptionStruct{
+		TextStruct: TextStruct{
+			componentStruct: componentStruct{},
 		},
 	}
 	i.SetRole("caption")

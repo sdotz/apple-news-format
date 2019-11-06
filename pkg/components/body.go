@@ -1,17 +1,16 @@
 package components
 
-
-type bodyStruct struct {
-	textStruct
+type BodyStruct struct {
+	TextStruct
 }
 
-func NewBody() *bodyStruct {
-	b := bodyStruct{
-		textStruct: textStruct{
-			componentStruct: componentStruct{
-			},
+func NewBody() *BodyStruct {
+	b := BodyStruct{
+		TextStruct: TextStruct{
+			componentStruct: componentStruct{},
 		},
 	}
 	b.SetRole("body")
+	b.SetLayout("default-body")
 	return &b
 }

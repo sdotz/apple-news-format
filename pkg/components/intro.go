@@ -1,14 +1,13 @@
 package components
 
-type introStruct struct {
-	textStruct
+type IntroStruct struct {
+	TextStruct
 }
 
-func NewIntro() *introStruct {
-	i := introStruct{
-		textStruct: textStruct{
-			componentStruct: componentStruct{
-			},
+func NewIntro() *IntroStruct {
+	i := IntroStruct{
+		TextStruct: TextStruct{
+			componentStruct: componentStruct{},
 		},
 	}
 	i.SetRole("intro")

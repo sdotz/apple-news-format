@@ -1,14 +1,13 @@
 package components
 
-type authorStruct struct {
-	textStruct
+type AuthorStruct struct {
+	TextStruct
 }
 
-func NewAuthor() *authorStruct {
-	i := authorStruct{
-		textStruct: textStruct{
-			componentStruct: componentStruct{
-			},
+func NewAuthor() *AuthorStruct {
+	i := AuthorStruct{
+		TextStruct: TextStruct{
+			componentStruct: componentStruct{},
 		},
 	}
 	i.SetRole("author")

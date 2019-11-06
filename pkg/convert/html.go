@@ -74,6 +74,8 @@ func bodyBuilderFunction(cs []components.Component, n *html.Node) ([]components.
 			if n.FirstChild != nil && n.FirstChild.Type == html.TextNode {
 				paragraph := components.NewBody()
 				paragraph.SetText(n.FirstChild.Data)
+				paragraph.SetFormat(components.FormatHtml)
+				paragraph.SetLayout("default-body")
 				cs = append(cs, paragraph)
 			}
 			break

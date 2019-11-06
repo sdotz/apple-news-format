@@ -1,5 +1,9 @@
 package layouts
 
+import (
+	"github.com/sdotz/apple-news-format/pkg/properties"
+)
+
 type HorizontalContentAlignmentOption string
 type IgnoreDocumentGutterOption string
 type IgnoreDocumentMarginOption string
@@ -33,6 +37,7 @@ type ComponentLayout struct {
 	IgnoreDocumentMargin       IgnoreDocumentMarginOption       `json:"ignoreDocumentMargin,omitempty"`
 	MaximumContentWidth        string                           `json:"maximumContentWidth,omitempty"`
 	MinimumHeight              string                           `json:"minimumHeight,omitempty"`
+	Margin                     properties.Margin                `json:"margin,omitempty"`
 }
 
 type ContentInset struct {

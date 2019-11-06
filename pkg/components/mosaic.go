@@ -1,12 +1,12 @@
 package components
 
-type mosaicStruct struct {
+type MosaicStruct struct {
 	componentStruct
-	Items []galleryItem `json:"items"`
+	Items []GalleryItem `json:"items"`
 }
 
-func NewMosaic() *mosaicStruct {
-	i := mosaicStruct{}
+func NewMosaic() *MosaicStruct {
+	i := MosaicStruct{}
 	i.SetRole("mosaic")
 	return &i
 }

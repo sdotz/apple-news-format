@@ -1,6 +1,6 @@
 package components
 
-type portraitStruct struct {
+type PortraitStruct struct {
 	componentStruct
 	URL                  string `json:"URL"`
 	AccessibilityCaption string `json:"accessibilityCaption,omitempty"`
@@ -9,8 +9,8 @@ type portraitStruct struct {
 	ExplicitContent bool   `json:"explicitContent,omitempty"`
 }
 
-func NewPortrait() *portraitStruct {
-	i := portraitStruct{}
+func NewPortrait() *PortraitStruct {
+	i := PortraitStruct{}
 	i.SetRole("portrait")
 	return &i
 }
