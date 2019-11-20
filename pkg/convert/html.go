@@ -2,6 +2,7 @@ package convert
 
 import (
 	"bytes"
+	"io"
 	"io/ioutil"
 	"net/http"
 	url2 "net/url"
@@ -13,12 +14,25 @@ import (
 	"golang.org/x/net/html"
 )
 
-func ConvertHtmlToAnf(url string, htmlBytes []byte, siteConfig *SiteConversionConfig) (*article.Article, error) {
+type LinkFormatter interface {
+	Format(string) string
+}
 
+type DefaultLinkFormatter struct{}
+
+type Converter struct {
+	LinkFormatter LinkFormatter
+}
+
+func (df *DefaultLinkFormatter) Format(inHREF string) string {
+	return inHREF
+}
+
+func (c *Converter) HTMLToANF(url string, htmlBytes []byte, siteConfig *SiteConversionConfig) (*article.Article, error) {
 	myArticle := article.NewArticleWithDefaults()
 	//Example from https://godoc.org/golang.org/x/net/html#example-Parse
 
-	components, err := HTMLToANFComponents(htmlBytes, siteConfig)
+	components, err := c.HTMLToANFComponents(htmlBytes, siteConfig)
 	if err != nil {
 		return nil, err
 	}
@@ -32,7 +46,7 @@ func ConvertHtmlToAnf(url string, htmlBytes []byte, siteConfig *SiteConversionCo
 	return &myArticle, nil
 }
 
-func HTMLToANFComponents(htmlBytes []byte, siteConfig *SiteConversionConfig) ([]components.Component, error) {
+func (c *Converter) HTMLToANFComponents(htmlBytes []byte, siteConfig *SiteConversionConfig) ([]components.Component, error) {
 	doc, err := goquery.NewDocumentFromReader(bytes.NewBuffer(htmlBytes))
 	if err != nil {
 		return nil, err
@@ -42,13 +56,13 @@ func HTMLToANFComponents(htmlBytes []byte, siteConfig *SiteConversionConfig) ([]
 	if siteConfig != nil && len(siteConfig.SectionConversionSelectors) > 0 {
 		for _, v := range siteConfig.SectionConversionSelectors {
 			selection := doc.Find(v)
-			components, err = bodyBuilderFunction(components, selection.Get(0))
+			components, err = c.bodyBuilderFunction(components, selection.Get(0))
 			if err != nil {
 				return components, err
 			}
 		}
 	} else {
-		components, err = bodyBuilderFunction(components, doc.Get(0))
+		components, err = c.bodyBuilderFunction(components, doc.Get(0))
 		if err != nil {
 			return components, err
 		}
@@ -67,13 +81,17 @@ func getElementAttr(element *html.Node, attr string) *html.Attribute {
 	return retVal
 }
 
-func bodyBuilderFunction(cs []components.Component, n *html.Node) ([]components.Component, error) {
+func (converter *Converter) bodyBuilderFunction(cs []components.Component, n *html.Node) ([]components.Component, error) {
 	if n.Type == html.ElementNode {
 		switch n.Data {
 		case "p":
+			var buf bytes.Buffer
+			w := io.Writer(&buf)
 			if n.FirstChild != nil && n.FirstChild.Type == html.TextNode {
 				paragraph := components.NewBody()
-				paragraph.SetText(n.FirstChild.Data)
+				converter.appendTrackingParams(n)
+				html.Render(w, n)
+				paragraph.SetText(buf.String())
 				paragraph.SetFormat(components.FormatHtml)
 				paragraph.SetLayout("default-body")
 				cs = append(cs, paragraph)
@@ -87,7 +105,7 @@ func bodyBuilderFunction(cs []components.Component, n *html.Node) ([]components.
 			}
 			break
 		case "img":
-			image := components.NewImage()
+			image := components.NewPhoto()
 			url := getElementAttr(n, "src")
 			if _, err := url2.ParseRequestURI(url.Val); err != nil {
 				errLog.Println(err.Error())
@@ -121,11 +139,11 @@ func bodyBuilderFunction(cs []components.Component, n *html.Node) ([]components.
 			break
 		default:
 		}
-
 	}
+
 	for c := n.FirstChild; c != nil; c = c.NextSibling {
 		var childComponents []components.Component
-		childComponents, err := bodyBuilderFunction(childComponents, c)
+		childComponents, err := converter.bodyBuilderFunction(childComponents, c)
 		if err != nil {
 			return cs, err
 		}
@@ -134,7 +152,20 @@ func bodyBuilderFunction(cs []components.Component, n *html.Node) ([]components.
 	return cs, nil
 }
 
-func ConvertUrlToAnf(url string, siteConfig *SiteConversionConfig) (*article.Article, error) {
+func (converter *Converter) appendTrackingParams(n *html.Node) {
+	if n.Type == html.ElementNode && n.Data == "a" {
+		for k, a := range n.Attr {
+			if a.Key == "href" {
+				n.Attr[k].Val = converter.LinkFormatter.Format(a.Val)
+			}
+		}
+	}
+	for c := n.FirstChild; c != nil; c = c.NextSibling {
+		converter.appendTrackingParams(c)
+	}
+}
+
+func (c *Converter) ConvertUrlToAnf(url string, siteConfig *SiteConversionConfig) (*article.Article, error) {
 	resp, err := http.Get(url)
 	if err != nil {
 		return nil, err
@@ -145,5 +176,5 @@ func ConvertUrlToAnf(url string, siteConfig *SiteConversionConfig) (*article.Art
 	}
 
 	bodyBytes, _ := ioutil.ReadAll(resp.Body)
-	return ConvertHtmlToAnf(url, bodyBytes, siteConfig)
+	return c.HTMLToANF(url, bodyBytes, siteConfig)
 }
