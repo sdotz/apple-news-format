@@ -105,7 +105,8 @@ func (converter *Converter) bodyBuilderFunction(cs []components.Component, n *ht
 			}
 			break
 		case "img":
-			image := components.NewPhoto()
+			//The Image component has pinch to zoom disabled.
+			image := components.NewImage()
 			url := getElementAttr(n, "src")
 			if _, err := url2.ParseRequestURI(url.Val); err != nil {
 				errLog.Println(err.Error())
@@ -136,6 +137,15 @@ func (converter *Converter) bodyBuilderFunction(cs []components.Component, n *ht
 			}
 
 			cs = append(cs, video)
+			break
+		case "figcaption":
+			var buf bytes.Buffer
+			w := io.Writer(&buf)
+			caption := components.NewCaption()
+			caption.SetFormat(components.FormatHtml)
+			html.Render(w, n)
+			caption.Text = buf.String()
+			cs = append(cs, caption)
 			break
 		default:
 		}
