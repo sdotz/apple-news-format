@@ -5,7 +5,7 @@ import (
 	"io"
 	"io/ioutil"
 	"net/http"
-	url2 "net/url"
+	"net/url"
 
 	"github.com/PuerkitoBio/goquery"
 	"github.com/pkg/errors"
@@ -20,8 +20,11 @@ type LinkFormatter interface {
 
 type DefaultLinkFormatter struct{}
 
+//type CustomComponentHandler struct{}
+
 type Converter struct {
 	LinkFormatter LinkFormatter
+	//CustomComponentHandlers []*CustomComponentHandler
 }
 
 func (df *DefaultLinkFormatter) Format(inHREF string) string {
@@ -56,13 +59,13 @@ func (c *Converter) HTMLToANFComponents(htmlBytes []byte, siteConfig *SiteConver
 	if siteConfig != nil && len(siteConfig.SectionConversionSelectors) > 0 {
 		for _, v := range siteConfig.SectionConversionSelectors {
 			selection := doc.Find(v)
-			components, err = c.bodyBuilderFunction(components, selection.Get(0))
+			components, err = c.bodyBuilderFunction(components, selection)
 			if err != nil {
 				return components, err
 			}
 		}
 	} else {
-		components, err = c.bodyBuilderFunction(components, doc.Get(0))
+		components, err = c.bodyBuilderFunction(components, doc.Slice(0, goquery.ToEnd))
 		if err != nil {
 			return components, err
 		}
@@ -81,77 +84,78 @@ func getElementAttr(element *html.Node, attr string) *html.Attribute {
 	return retVal
 }
 
-func (converter *Converter) bodyBuilderFunction(cs []components.Component, n *html.Node) ([]components.Component, error) {
-	if n.Type == html.ElementNode {
-		switch n.Data {
-		case "p":
-			var buf bytes.Buffer
-			w := io.Writer(&buf)
-			if n.FirstChild != nil && n.FirstChild.Type == html.TextNode {
-				paragraph := components.NewBody()
-				converter.appendTrackingParams(n)
-				html.Render(w, n)
-				paragraph.SetText(buf.String())
-				paragraph.SetFormat(components.FormatHtml)
-				paragraph.SetLayout("default-body")
-				cs = append(cs, paragraph)
-			}
+func (converter *Converter) bodyBuilderFunction(cs []components.Component, n *goquery.Selection) ([]components.Component, error) {
+	switch goquery.NodeName(n) {
+	case "p":
+		var buf bytes.Buffer
+		w := io.Writer(&buf)
+		paragraph := components.NewBody()
+		//TODO: is picking the first one here wrong?
+		converter.appendTrackingParams(n.Get(0))
+		//TODO: and here...
+		html.Render(w, n.Get(0))
+		paragraph.SetText(buf.String())
+		paragraph.SetFormat(components.FormatHtml)
+		paragraph.SetLayout("default-body")
+		cs = append(cs, paragraph)
+		break
+	case "h1":
+		h := components.NewHeadingWithLevel(components.HEADINGLEVEL1)
+		h.SetText(n.Text())
+		cs = append(cs, h)
+		break
+	case "img":
+		//The Image component has pinch to zoom disabled.
+		image := components.NewImage()
+		src, exists := n.Attr("src")
+		if !exists {
 			break
-		case "h1":
-			if n.FirstChild != nil && n.FirstChild.Type == html.TextNode {
-				h := components.NewHeadingWithLevel(components.HEADINGLEVEL1)
-				h.SetText(n.FirstChild.Data)
-				cs = append(cs, h)
-			}
-			break
-		case "img":
-			//The Image component has pinch to zoom disabled.
-			image := components.NewImage()
-			url := getElementAttr(n, "src")
-			if _, err := url2.ParseRequestURI(url.Val); err != nil {
-				errLog.Println(err.Error())
-				break
-			}
-
-			if url != nil {
-				image.URL = url.Val
-			}
-
-			altText := getElementAttr(n, "alt")
-			if altText != nil {
-				image.AccessibilityCaption = altText.Val
-			}
-
-			cs = append(cs, image)
-			break
-		case "video":
-			video := components.NewVideo()
-			url := getElementAttr(n, "src")
-			if _, err := url2.ParseRequestURI(url.Val); err != nil {
-				errLog.Println(err.Error())
-				break
-			}
-
-			if url != nil {
-				video.URL = url.Val
-			}
-
-			cs = append(cs, video)
-			break
-		case "figcaption":
-			var buf bytes.Buffer
-			w := io.Writer(&buf)
-			caption := components.NewCaption()
-			caption.SetFormat(components.FormatHtml)
-			html.Render(w, n)
-			caption.Text = buf.String()
-			cs = append(cs, caption)
-			break
-		default:
 		}
+
+		if _, err := url.ParseRequestURI(src); err != nil {
+			errLog.Println(err.Error())
+			break
+		}
+
+		image.URL = src
+
+		if altText, exists := n.Attr("alt"); exists {
+			image.AccessibilityCaption = altText
+		}
+		cs = append(cs, image)
+		break
+	case "video":
+		video := components.NewVideo()
+		src, exists := n.Attr("src")
+		if !exists {
+			break
+		}
+
+		if _, err := url.ParseRequestURI(src); err != nil {
+			errLog.Println(err.Error())
+			break
+		}
+
+		video.URL = src
+
+		cs = append(cs, video)
+		break
+	case "figcaption":
+		var buf bytes.Buffer
+		w := io.Writer(&buf)
+		caption := components.NewCaption()
+		caption.SetFormat(components.FormatHtml)
+		html.Render(w, n.Get(0))
+		caption.Text = buf.String()
+		cs = append(cs, caption)
+		break
+	case "tweet":
+
+		break
+	default:
 	}
 
-	for c := n.FirstChild; c != nil; c = c.NextSibling {
+	for c := n.Children().First(); c.Length() > 0; c = c.Next() {
 		var childComponents []components.Component
 		childComponents, err := converter.bodyBuilderFunction(childComponents, c)
 		if err != nil {
