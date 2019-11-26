@@ -97,6 +97,9 @@ func (converter *Converter) bodyBuilderFunction(cs []components.Component, n *go
 	}
 	switch goquery.NodeName(n) {
 	case "p":
+		if len(n.Text()) == 0 {
+			break
+		}
 		var buf bytes.Buffer
 		w := io.Writer(&buf)
 		paragraph := components.NewBody()
@@ -158,6 +161,15 @@ func (converter *Converter) bodyBuilderFunction(cs []components.Component, n *go
 		html.Render(w, n.Get(0))
 		caption.Text = buf.String()
 		cs = append(cs, caption)
+		break
+	case "ul":
+		list := components.NewBody()
+		list.SetFormat(components.FormatHtml)
+		var buf bytes.Buffer
+		w := io.Writer(&buf)
+		html.Render(w, n.Get(0))
+		list.SetText(buf.String())
+		cs = append(cs, list)
 		break
 	case "tweet":
 
