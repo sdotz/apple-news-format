@@ -14,4 +14,5 @@ type ComponentTextStyle struct {
 	Hyphenation        bool          `json:"hyphenation,omitempty"`
 	LineHeight         int           `json:"lineHeight,omitempty"`
 	LinkStyle          *TextStyle    `json:"linkStyle,omitempty"`
+	TextColor          string        `json:"textColor,omitempty"`
 }

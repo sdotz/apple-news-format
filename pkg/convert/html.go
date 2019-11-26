@@ -20,11 +20,14 @@ type LinkFormatter interface {
 
 type DefaultLinkFormatter struct{}
 
-//type CustomComponentHandler struct{}
+type CustomComponentHandler interface {
+	Handle(*goquery.Selection) ([]components.Component, error)
+	Matches(*goquery.Selection) bool
+}
 
 type Converter struct {
-	LinkFormatter LinkFormatter
-	//CustomComponentHandlers []*CustomComponentHandler
+	LinkFormatter           LinkFormatter
+	CustomComponentHandlers []CustomComponentHandler
 }
 
 func (df *DefaultLinkFormatter) Format(inHREF string) string {
@@ -85,6 +88,13 @@ func getElementAttr(element *html.Node, attr string) *html.Attribute {
 }
 
 func (converter *Converter) bodyBuilderFunction(cs []components.Component, n *goquery.Selection) ([]components.Component, error) {
+	for _, v := range converter.CustomComponentHandlers {
+		if v.Matches(n) {
+			if customComponent, err := v.Handle(n); err == nil {
+				cs = append(cs, customComponent...)
+			}
+		}
+	}
 	switch goquery.NodeName(n) {
 	case "p":
 		var buf bytes.Buffer
