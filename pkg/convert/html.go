@@ -164,15 +164,15 @@ func (converter *Converter) bodyBuilderFunction(cs []components.Component, n *go
 		break
 	case "ul":
 		list := components.NewBody()
+		//TODO: get spacing between list items
+		list.SetLayout("default-body")
 		list.SetFormat(components.FormatHtml)
 		var buf bytes.Buffer
 		w := io.Writer(&buf)
+		// render the root node (ul) and all <li> will render with it
 		html.Render(w, n.Get(0))
 		list.SetText(buf.String())
 		cs = append(cs, list)
-		break
-	case "tweet":
-
 		break
 	default:
 	}

@@ -11,6 +11,5 @@ func NewBody() *BodyStruct {
 		},
 	}
 	b.SetRole("body")
-	b.SetLayout("default-body")
 	return &b
 }
