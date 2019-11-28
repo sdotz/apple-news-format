@@ -31,7 +31,7 @@ fmt.Println(article.String())
 ### Text
 |Component Type|Struct Support|HTML Conversion|
 |---|---|---|
-|Body|x|p|
+|Body|x|p, ul, li|
 |Title|x||
 |Heading1,2,3,4,5,6|x|h1|
 |ArticleTitle||
@@ -60,13 +60,13 @@ fmt.Println(article.String())
 |Gallery|x|
 |Mosaic|x|
 
-### Audio
-|Component Type|Struct Support|
+### Audio/Video
+|Component Type|Struct Support|HTML Conversion|
 |---|---|
-|Audio|x|
-|Music|x|
-|Video|x|
-|EmbedWebVideo|x|
+|Audio|x||
+|Music|x||
+|Video|x|video|
+|EmbedWebVideo|x||
 
 ### Location
 |Component Type|Struct Support|
