@@ -2,9 +2,9 @@
 
 A collection of structs and helpers for generating valid Apple News articles. Use this between your CMS and content model to assemble an article and serialize to the [Apple News Format (ANF)](https://developer.apple.com/documentation/apple_news/apple_news_format) JSON.
 
-Publisher organizations have differing CMS systems and content formats, but you can use this to convert from JSON, XML or whatever structured formaty you like into Apple News format with a small amount of code.
+Publisher organizations have differing CMS systems and content formats, but you can use this to convert from JSON, XML or whatever structured format you like into Apple News format with a small amount of code.
 
-It is common for CMSs to represent at least the body of the article as semantic HTML, so the library also includes helpers for converting from HTML to ANF autmatically. 
+It is common to represent at least the body of the article as semantic HTML, so the library also includes helpers for converting from HTML to ANF autmatically. This should do most of the heavy lifting for you.
 
 ## Usage
 ```go
