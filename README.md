@@ -8,21 +8,22 @@ It is common for CMSs to represent at least the body of the article as semantic 
 
 ## Usage
 ```go
-	a := article.NewArticleWithDefaults()
-	a.Version = article.FORMAT_VERSION_1_7
-	a.Identifier = content.NaturalID
-	a.Language = "en-US"
-	a.DocumentStyle.BackgroundColor = "#fcfcfc"
+a := article.NewArticleWithDefaults()
 
-  a.Title := "My News Story"
+a.Version = article.FORMAT_VERSION_1_7
+a.Identifier = content.NaturalID
+a.Language = "en-US"
+a.DocumentStyle.BackgroundColor = "#fcfcfc"
+a.Title := "My News Story"
 
-  bodyComponent := components.NewBody()
-  bodyComponent.SetText("This is the beginning of an amazing story...")
+bodyComponent := components.NewBody()
+bodyComponent.SetText("This is the beginning of an amazing story...")
 
-  article.Components = append(article.Components, bodyComponent) 
+// add a bunch of components to the Article
+article.Components = append(article.Components, bodyComponent) 
 
-  // Article implements Stringer and will output the valid Apple News format
-  fmt.Println(article.String())
+// Article implements Stringer and will output the valid Apple News format
+fmt.Println(article.String())
 ```
 
 ## List of supported ANF components
