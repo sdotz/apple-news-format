@@ -11,18 +11,18 @@ It is common for CMSs to represent at least the body of the article as semantic 
 a := article.NewArticleWithDefaults()
 
 a.Version = article.FORMAT_VERSION_1_7
-a.Identifier = content.NaturalID
+a.Identifier = "newsjam://article/1c2ad8ac-9379-488a-9480-7f55b6da4a90" 
 a.Language = "en-US"
 a.DocumentStyle.BackgroundColor = "#fcfcfc"
 a.Title := "My News Story"
 
 bodyComponent := components.NewBody()
-bodyComponent.SetText("This is the beginning of an amazing story...")
+bodyComponent.SetText("This is the beginning of an amazing tale...")
 
 // add a bunch of components to the Article
 article.Components = append(article.Components, bodyComponent) 
 
-// Article implements Stringer and will output the valid Apple News format
+// Article implements Stringer and will output the valid Apple News format JSON
 fmt.Println(article.String())
 ```
 
