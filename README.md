@@ -62,7 +62,7 @@ fmt.Println(article.String())
 
 ### Audio/Video
 |Component Type|Struct Support|HTML Conversion|
-|---|---|
+|---|---|---|
 |Audio|x||
 |Music|x||
 |Video|x|video|
