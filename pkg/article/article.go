@@ -63,7 +63,7 @@ type AdvertisingSettings struct {
 }
 
 type AdvertisingLayout struct {
-	Margin properties.Margin `json:"margin"`
+	Margin properties.Margin `json:"margin,omitempty"`
 }
 
 type LinkedArticle struct {

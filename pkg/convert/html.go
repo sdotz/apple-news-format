@@ -87,6 +87,14 @@ func getElementAttr(element *html.Node, attr string) *html.Attribute {
 	return retVal
 }
 
+func renderHTML(n *html.Node) string {
+	var buf bytes.Buffer
+	w := io.Writer(&buf)
+
+	html.Render(w, n)
+	return buf.String()
+}
+
 func (converter *Converter) bodyBuilderFunction(cs []components.Component, n *goquery.Selection) ([]components.Component, error) {
 	for _, v := range converter.CustomComponentHandlers {
 		if v.Matches(n) {
@@ -114,7 +122,38 @@ func (converter *Converter) bodyBuilderFunction(cs []components.Component, n *go
 		break
 	case "h1":
 		h := components.NewHeadingWithLevel(components.HEADINGLEVEL1)
-		h.SetText(n.Text())
+		h.SetText(renderHTML(n.Get(0)))
+		h.SetFormat(components.FormatHtml)
+		cs = append(cs, h)
+		break
+	case "h2":
+		h := components.NewHeadingWithLevel(components.HEADINGLEVEL2)
+		h.SetText(renderHTML(n.Get(0)))
+		h.SetFormat(components.FormatHtml)
+		cs = append(cs, h)
+		break
+	case "h3":
+		h := components.NewHeadingWithLevel(components.HEADINGLEVEL3)
+		h.SetText(renderHTML(n.Get(0)))
+		h.SetFormat(components.FormatHtml)
+		cs = append(cs, h)
+		break
+	case "h4":
+		h := components.NewHeadingWithLevel(components.HEADINGLEVEL4)
+		h.SetText(renderHTML(n.Get(0)))
+		h.SetFormat(components.FormatHtml)
+		cs = append(cs, h)
+		break
+	case "h5":
+		h := components.NewHeadingWithLevel(components.HEADINGLEVEL5)
+		h.SetText(renderHTML(n.Get(0)))
+		h.SetFormat(components.FormatHtml)
+		cs = append(cs, h)
+		break
+	case "h6":
+		h := components.NewHeadingWithLevel(components.HEADINGLEVEL6)
+		h.SetText(renderHTML(n.Get(0)))
+		h.SetFormat(components.FormatHtml)
 		cs = append(cs, h)
 		break
 	case "img":
