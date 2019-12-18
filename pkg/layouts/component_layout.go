@@ -29,15 +29,24 @@ const (
 )
 
 type ComponentLayout struct {
-	ColumnSpan                 int                              `json:"columnSpan"`
-	ColumnStart                int                              `json:"columnStart"`
+	ColumnSpan                 int                              `json:"columnSpan,omitempty"`
+	ColumnStart                int                              `json:"columnStart,omitempty"`
 	ContentInset               ContentInset                     `json:"contentInset,omitempty"`
 	HorizontalContentAlignment HorizontalContentAlignmentOption `json:"horizontalContentAlignment,omitempty"`
 	IgnoreDocumentGutter       IgnoreDocumentGutterOption       `json:"ignoreDocumentGutter,omitempty"`
 	IgnoreDocumentMargin       IgnoreDocumentMarginOption       `json:"ignoreDocumentMargin,omitempty"`
 	MaximumContentWidth        string                           `json:"maximumContentWidth,omitempty"`
 	MinimumHeight              string                           `json:"minimumHeight,omitempty"`
+	MinimumWidth               string                           `json:"minimumWidth,omitempty"`
 	Margin                     properties.Margin                `json:"margin,omitempty"`
+	Padding                    Padding                          `json:"padding,omitempty"`
+}
+
+type Padding struct {
+	Top    int `json:"top,omitempty"`
+	Left   int `json:"left,omitempty"`
+	Bottom int `json:"bottom,omitempty"`
+	Right  int `json:"right,omitempty"`
 }
 
 type ContentInset struct {
