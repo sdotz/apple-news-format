@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
+	"regexp"
 
 	"github.com/PuerkitoBio/goquery"
 	"github.com/pkg/errors"
@@ -172,7 +173,10 @@ func (converter *Converter) bodyBuilderFunction(cs []components.Component, n *go
 		image.URL = src
 
 		if altText, exists := n.Attr("alt"); exists {
-			image.AccessibilityCaption = altText
+			//don't add it if it is only whitespace
+			if !isWhitespace(altText) {
+				image.AccessibilityCaption = altText
+			}
 		}
 		cs = append(cs, image)
 		break
@@ -198,8 +202,10 @@ func (converter *Converter) bodyBuilderFunction(cs []components.Component, n *go
 		caption := components.NewCaption()
 		caption.SetFormat(components.FormatHtml)
 		html.Render(w, n.Get(0))
-		caption.Text = buf.String()
-		cs = append(cs, caption)
+		if !isWhitespace(buf.String()) {
+			caption.Text = buf.String()
+			cs = append(cs, caption)
+		}
 		break
 	case "ul":
 		list := components.NewBody()
@@ -238,6 +244,10 @@ func (converter *Converter) appendTrackingParams(n *html.Node) {
 	for c := n.FirstChild; c != nil; c = c.NextSibling {
 		converter.appendTrackingParams(c)
 	}
+}
+
+func isWhitespace(testString string) bool {
+	return regexp.MustCompile(`^\s+$`).Match([]byte(testString))
 }
 
 func (c *Converter) ConvertUrlToAnf(url string, siteConfig *SiteConversionConfig) (*article.Article, error) {
