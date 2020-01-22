@@ -23,6 +23,7 @@ const (
 	BannerTypeLarge        BannerType = "large"
 
 	FORMAT_VERSION_1_7 = "1.7"
+	FORMAT_VERSION_1_9 = "1.9"
 )
 
 type Article struct {
@@ -94,7 +95,7 @@ func NewArticleWithDefaults() Article {
 	identifier, _ := uuid.NewV4()
 	a := Article{
 		Language: "en",
-		Version:  FORMAT_VERSION_1_7,
+		Version:  FORMAT_VERSION_1_9,
 		Layout: Layout{
 			Columns: 10,
 			Gutter:  20,
