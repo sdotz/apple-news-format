@@ -33,7 +33,8 @@ type Article struct {
 	Title               string                               `json:"title"`
 	Subtitle            string                               `json:"subtitle"`
 	Layout              Layout                               `json:"layout"`
-	AdvertisingSettings AdvertisingSettings                  `json:"advertisingSettings"`
+	AdvertisingSettings *AdvertisingSettings                 `json:"advertisingSettings,omitempty"`
+	Autoplacement       map[string]interface{}               `json:"autoplacement,omitempty"`
 	Metadata            ArticleMetadata                      `json:"metadata"`
 	Components          []components.Component               `json:"components"`
 	DocumentStyle       styles.DocumentStyle                 `json:"documentStyle"`
@@ -41,6 +42,14 @@ type Article struct {
 	ComponentStyles     map[string]styles.ComponentStyle     `json:"componentStyles,omitempty"`
 	TextStyles          map[string]styles.TextStyle          `json:"textStyles,omitempty"`
 	ComponentLayouts    map[string]layouts.ComponentLayout   `json:"componentLayouts,omitempty"`
+}
+
+type AdvertisementAutoPlacement struct {
+	BannerType        string  `json:"bannerType,omitempty"`
+	Enabled           bool    `json:"enabled"`
+	Frequency         int     `json:"frequency,omitempty"`
+	DistanceFromMedia string  `json:"distanceFromMedia,omitempty"`
+	Layout            *Layout `json:"layout,omitempty"`
 }
 
 type Layout struct {
