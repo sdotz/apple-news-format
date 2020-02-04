@@ -106,7 +106,7 @@ func (converter *Converter) bodyBuilderFunction(cs []components.Component, n *go
 	}
 	switch goquery.NodeName(n) {
 	case "p":
-		if len(n.Text()) == 0 {
+		if len(n.Text()) == 0 || isWhitespace(n.Text()) {
 			break
 		}
 		var buf bytes.Buffer
