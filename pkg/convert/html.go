@@ -207,7 +207,7 @@ func (converter *Converter) bodyBuilderFunction(cs []components.Component, n *go
 			cs = append(cs, caption)
 		}
 		break
-	case "ul":
+	case "ul", "ol":
 		list := components.NewBody()
 		//TODO: get spacing between list items
 		list.SetLayout("default-body")
