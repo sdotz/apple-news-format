@@ -11,7 +11,7 @@ const (
 )
 
 type Border struct {
-	All    StrokeStyle `json:"strokeStyle,omitempty"`
+	All    StrokeStyle `json:"all,omitempty"`
 	Bottom bool        `json:"bottom,omitempty"`
 	Left   bool        `json:"left,omitempty"`
 	Right  bool        `json:"right,omitempty"`
@@ -25,7 +25,7 @@ type StrokeStyle struct {
 }
 
 type ComponentStyle struct {
-	BackgroundColor Color  `json:"backgroundColor,omitempty"`
+	BackgroundColor Color   `json:"backgroundColor,omitempty"`
 	Border          *Border `json:"border,omitempty"`
 	Fill            *Fill   `json:"fill,omitempty"`
 }
