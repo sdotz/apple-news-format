@@ -10,6 +10,11 @@ const (
 	StrokeStyleValueDotted StrokeStyleOption = "dotted"
 )
 
+type Mask struct {
+	Radius int    `json:"radius,omitempty"`
+	Type   string `json:"type,omitempty"`
+}
+
 type Border struct {
 	All    StrokeStyle `json:"all,omitempty"`
 	Bottom bool        `json:"bottom,omitempty"`
