@@ -33,4 +33,5 @@ type ComponentStyle struct {
 	BackgroundColor Color   `json:"backgroundColor,omitempty"`
 	Border          *Border `json:"border,omitempty"`
 	Fill            *Fill   `json:"fill,omitempty"`
+	Mask            *Mask   `json:"mask,omitempty"`
 }
