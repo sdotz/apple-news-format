@@ -97,6 +97,7 @@ func renderHTML(n *html.Node) string {
 }
 
 func (converter *Converter) bodyBuilderFunction(cs []components.Component, n *goquery.Selection) ([]components.Component, error) {
+	nodeName := goquery.NodeName(n)
 	for _, v := range converter.CustomComponentHandlers {
 		if v.Matches(n) {
 			customComponent, err := v.Handle(n)
@@ -105,10 +106,12 @@ func (converter *Converter) bodyBuilderFunction(cs []components.Component, n *go
 			}
 			cs = append(cs, customComponent...)
 			//this means the custom handler will match/convert only the first thing matched
-			return cs, nil
+			nodeName = "matchedCustomNode"
 		}
 	}
-	switch goquery.NodeName(n) {
+
+	switch nodeName {
+	case "matchedCustomNode":
 	case "p":
 		if len(n.Text()) == 0 || isWhitespace(n.Text()) {
 			break
