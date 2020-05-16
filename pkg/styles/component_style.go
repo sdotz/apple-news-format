@@ -17,10 +17,10 @@ type Mask struct {
 
 type Border struct {
 	All    StrokeStyle `json:"all,omitempty"`
-	Bottom bool        `json:"bottom,omitempty"`
-	Left   bool        `json:"left,omitempty"`
-	Right  bool        `json:"right,omitempty"`
-	Top    bool        `json:"top,omitempty"`
+	Bottom bool        `json:"bottom"`
+	Left   bool        `json:"left"`
+	Right  bool        `json:"right"`
+	Top    bool        `json:"top"`
 }
 
 type StrokeStyle struct {
