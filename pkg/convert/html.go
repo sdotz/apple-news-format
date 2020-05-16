@@ -99,9 +99,13 @@ func renderHTML(n *html.Node) string {
 func (converter *Converter) bodyBuilderFunction(cs []components.Component, n *goquery.Selection) ([]components.Component, error) {
 	for _, v := range converter.CustomComponentHandlers {
 		if v.Matches(n) {
-			if customComponent, err := v.Handle(n); err == nil {
-				cs = append(cs, customComponent...)
+			customComponent, err := v.Handle(n)
+			if err != nil {
+				return cs, err
 			}
+			cs = append(cs, customComponent...)
+			//this means the custom handler will match/convert only the first thing matched
+			return cs, nil
 		}
 	}
 	switch goquery.NodeName(n) {
