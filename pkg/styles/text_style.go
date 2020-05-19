@@ -2,6 +2,7 @@ package styles
 
 type FontStyle string
 type VerticalAlignment string
+type TextTransform string
 
 const (
 	FontStyleNormal  FontStyle = "normal"
@@ -11,10 +12,15 @@ const (
 	VerticalAlignmentSuperscript VerticalAlignment = "superscript"
 	VerticalAlignmentSubscript   VerticalAlignment = "subscript"
 	VerticalAlignmentBaseline    VerticalAlignment = "baseline"
+
+	TextTransformUppercase  TextTransform = "uppercase"
+	TextTransformLowercase  TextTransform = "lowercase"
+	TextTransformCapitalize TextTransform = "capitalize"
+	TextTransformSmallcaps  TextTransform = "smallcaps"
 )
 
 type TextStyle struct {
-	BackgroundColor    *Color             `json:"backgroundColor,omitempty"`
+	BackgroundColor    Color              `json:"backgroundColor,omitempty"`
 	FontFamily         string             `json:"fontFamily,omitempty"`
 	FontName           string             `json:"fontName,omitempty"`
 	FontSize           int                `json:"fontSize,omitempty"`
@@ -24,10 +30,11 @@ type TextStyle struct {
 	OrderedListItems   *ListItemStyle     `json:"orderedListItems,omitempty"`
 	Strikethrough      *TextDecoration    `json:"strikethrough,omitempty"`
 	Stroke             *TextStrokeStyle   `json:"textStrokeStyle,omitempty"`
-	TextColor          *Color             `json:"textColor,omitempty"`
+	TextColor          Color              `json:"textColor,omitempty"`
 	TextShadow         *Shadow            `json:"textShadow,omitempty"`
 	Tracking           float64            `json:"tracking,omitempty"`
 	Underline          *TextDecoration    `json:"underline,omitempty"`
 	UnorderedListItems *ListItemStyle     `json:"unorderedListItems,omitempty"`
 	VerticalAlignment  *VerticalAlignment `json:"verticalAlignment,omitempty"`
+	TextTransform      TextTransform      `json:"textTransform,omitempty"`
 }
